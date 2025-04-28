@@ -1,0 +1,40 @@
+@startuml Delta Height Distribution Monitoring
+
+actor Employee
+participant HLC
+database MonitoringPath
+boundary PlotViewer
+
+MonitoringPath -> HLC: New data detected(LaserCoordinateN.csv, RobotCoordinateN.csv)
+activate HLC
+
+HLC -> HLC: Load files
+
+opt N > 1
+    HLC -> HLC: Optimize highest points of scan N - 1
+    HLC -> HLC: Transform points to cloud
+    HLC -> HLC: Filter out points not on plane
+
+    opt N == 2 
+        HLC -> HLC: Calculate boundary for grid
+        HLC -> HLC: Extrapolate z-coordinates on grid
+        HLC -> HLC: Calculate delta heights
+    end
+
+    HLC -> PlotViewer: DisplayDeltaHeightDist
+    activate PlotViewer
+    PlotViewer --> Employee: Show Delta Height Distribution Plot
+
+    loop User Interaction
+        Employee -> PlotViewer: Interact (Move, Scale, Point View)
+        PlotViewer -> PlotViewer: Update Display
+        PlotViewer --> Employee: Updated View / Point Info
+    end
+
+    deactivate PlotViewer
+end
+
+HLC -> MonitoringPath: Start monitoring for new data
+deactivate HLC
+
+@enduml

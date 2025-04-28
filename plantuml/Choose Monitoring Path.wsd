@@ -1,0 +1,36 @@
+@startuml Choose Monitoring Path
+
+actor Employee
+participant ScannerGUI
+database MonitoringPath
+participant HLC
+boundary PlotViewer
+
+create MonitoringPath
+ScannerGUI -> MonitoringPath : Create folder (YYYY-MM-dd_HH-mm-ss)
+
+Employee -> HLC : Launch / Start
+activate HLC
+
+HLC --> Employee : Prompt for folder selection
+Employee -> HLC : SelectFolder(path)
+HLC -> HLC : Validate folder(path)
+
+alt Folder is Valid
+    HLC -> MonitoringPath : Start monitoring folder(path)
+    HLC --> Employee : Display selected path
+
+    loop Monitoring & Processing Loop
+        MonitoringPath -> HLC : New data detected(N > 1)
+        HLC -> HLC : Process previous scan (M = N-1)
+        HLC -> PlotViewer : Visualize Scan(M)
+        activate PlotViewer
+        PlotViewer --> Employee : Show Visualization of Scan M
+        deactivate PlotViewer
+        HLC -> HLC : Wait(t seconds)
+    end
+
+else Folder Invalid
+    HLC --> Employee : Show Error Message
+end
+@enduml

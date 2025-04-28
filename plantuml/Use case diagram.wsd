@@ -1,0 +1,33 @@
+@startuml Use case diagram
+left to right direction
+
+actor Employee
+
+usecase "Point cloud monitoring" as s1
+usecase "Current height \ndestribution monitoring" as s2
+usecase "Delta heights \ndestribution monitoring" as s3
+usecase "Choose monitoring folder" as s7
+
+usecase "Scale plot" as s4
+usecase "Rotate points" as s5
+usecase "Move axes" as s6
+usecase "Point view" as s8
+
+Employee -- s1
+Employee -- s2
+Employee -- s3
+Employee -- s7
+
+s1 ..> s4 : <<include>>
+s1 ..> s5 : <<include>>
+s1 ..> s6 : <<include>>
+s1 ..> s8 : <<include>>
+
+s2 ..> s4 : <<include>>
+s2 ..> s6 : <<include>>
+s2 ..> s8 : <<include>>
+
+s3 ..> s4 : <<include>>
+s3 ..> s6 : <<include>>
+s3 ..> s8 : <<include>>
+@enduml

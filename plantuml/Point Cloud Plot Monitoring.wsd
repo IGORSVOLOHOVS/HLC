@@ -1,0 +1,36 @@
+@startuml Point Cloud Plot Monitoring
+
+actor Employee
+participant HLC
+database MonitoringPath
+boundary PlotViewer
+
+note over HLC
+The name of programm is Height Layer Calculator
+end note
+
+MonitoringPath -> HLC: New data detected(LaserCoordinateN.csv, RobotCoordinateN.csv)
+activate HLC
+
+HLC -> HLC: Load files
+
+opt N == 1
+    HLC -> HLC: Calculate & save plane equation(s)
+end
+
+HLC -> PlotViewer: DisplayPointCloud
+activate PlotViewer
+PlotViewer --> Employee: Show Point Cloud Plot
+
+loop User Interaction
+    Employee -> PlotViewer: Interact (Rotate, Move, Scale, Point View)
+    PlotViewer -> PlotViewer: Update Display
+    PlotViewer --> Employee: Updated View
+end
+
+deactivate PlotViewer
+
+HLC -> MonitoringPath: Start monitoring for new data
+deactivate HLC
+
+@enduml
