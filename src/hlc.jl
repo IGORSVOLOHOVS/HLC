@@ -112,6 +112,7 @@ function monitor_path(path::String, interval::Int64)
                     # read laser and robot points
                     robot_rows = Calc.csv_to_data_array(Calc.RobotRow, robot_file_prev)
                     laser_rows = Calc.csv_to_data_array(Calc.LaserRow, laser_file_prev)
+                    laser_rows = Calc.filter_laser_points(laser_rows)
 
                     # calculate points
                     cloud_points = Calc.calculate_points(robot_rows, laser_rows, calibration)

@@ -1,0 +1,79 @@
+@startuml Component Diagram - HLC Project
+skinparam componentStyle uml2
+
+!define SCRIPT << SCRIPT >>
+!define MODULE << MODULE >>
+!define LIBRARY << LIBRARY >>
+!define ARTIFACT << ARTIFACT >>
+
+component [main.jl] SCRIPT
+
+package "HLC Application" {
+    component HLC MODULE {
+        folder "Calculation Engine" {
+             component Calc MODULE {
+                [Config]
+                [Points]
+                [Plane]
+                [Height] <<heiht.jl>>
+            }
+        }
+
+        folder "Plotting" {
+             component Plot MODULE {
+                 [Visualization]
+             }
+        }
+    }
+}
+
+' External Libraries / Data Sources
+component [NativeFileDialog] LIBRARY
+component [YAML] LIBRARY
+component [CSV / DataFrames] LIBRARY
+component [Makie / GLMakie] LIBRARY
+component [Optim / Interpolations] LIBRARY
+
+[Config YAML] ARTIFACT
+[Input CSV Data] ARTIFACT
+[Output CSV Data] ARTIFACT
+
+
+' --- Relationships ---
+
+[main.jl] --> HLC : Executes
+
+HLC --> [NativeFileDialog] : Uses (Folder Dialog)
+HLC --> Calc : Orchestrates Calculations
+HLC --> Plot : Updates Plots
+
+Calc --> [Config] : Uses
+Calc --> [Points] : Uses
+Calc --> [Plane] : Uses
+Calc --> [Height] : Uses
+
+[Config] ..> [YAML] : Uses (Lib)
+[Config] ..> [Config YAML] : Reads/Writes
+
+[Points] ..> [CSV / DataFrames] : Uses (Lib)
+[Points] ..> [Input CSV Data] : Reads
+[Points] ..> [YAML] : Uses (Lib for Calib)
+[Points] ..> [Config YAML] : Reads (Calibration part)
+
+[Plane] --> [Points] : Needs Point Data
+[Plane] --> [Config] : Needs Plane Params from Config
+
+[Height] --> [Points] : Needs Point Data
+[Height] --> [Plane] : Needs Plane Definition
+[Height] ..> [CSV / DataFrames] : Uses (Lib)
+[Height] ..> [Output CSV Data] : Reads/Writes Layers
+[Height] ..> [Optim / Interpolations] : Uses
+[Height] --> [Config] : Needs Config Params
+
+
+Plot --> [Visualization] : Contains
+
+[Visualization] ..> [Makie / GLMakie] : Uses
+
+
+@enduml

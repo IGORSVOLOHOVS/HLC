@@ -145,9 +145,10 @@ end
 # copy_files_std(source_dir, dest_dir, max_index)
 # --- Example Usage ---
 # Make sure these paths exist and are correct for your system!
-source_dir = "C:\\Users\\Admin\\Projects\\Additive-Lab-Software\\CourceProject3\\HLC\\test\\2025-03-20_14-52-45\\test1"
+# source_dir = "C:\\Users\\Admin\\Projects\\Additive-Lab-Software\\CourceProject3\\HLC\\test\\2025-03-20_14-52-45\\test1"
+source_dir = "C:\\Users\\Admin\\Projects\\Additive-Lab-Software\\CourceProject3\\HLC\\test\\2025-04-30_13-45-49\\2025-04-30_15-09-02"
 dest_dir = "C:\\Users\\Admin\\Projects\\Additive-Lab-Software\\CourceProject3\\HLC\\test\\2025-03-20_14-52-45"
-max_index = 5 # Copy files with index 1, 2, 3, 4, 5
+max_index = 36 # Copy files with index 1, 2, 3, 4, 5
 
 clean_folder(dest_dir)
 copy_files_std(source_dir, dest_dir, max_index)

@@ -15,6 +15,8 @@ mutable struct CalibrationConfig
     a::Float64
     b::Float64
     c::Float64
+    laser_min_x::Float64
+    laser_max_x::Float64
 end
 
 mutable struct PlaneConfig
@@ -60,7 +62,7 @@ function load_config(filename::String="config.yaml")::Union{AppConfig, Nothing}
         plane_data = raw_config["plane"]
 
         # Nested key check (example)
-        req_cal_keys = ["exist", "x", "y", "z", "a", "b", "c"]
+        req_cal_keys = ["exist", "x", "y", "z", "a", "b", "c", "laser_min_x", "laser_max_x"]
         req_plane_keys = ["A", "B", "C", "D", "StdZ", "p0", "p1", "scans"]
         req_point_keys = ["x", "y"]
 
@@ -73,7 +75,8 @@ function load_config(filename::String="config.yaml")::Union{AppConfig, Nothing}
         # Create main structures
         calibration_config = CalibrationConfig(
             cal_data["x"], cal_data["y"], cal_data["z"],
-            cal_data["a"], cal_data["b"], cal_data["c"]
+            cal_data["a"], cal_data["b"], cal_data["c"],
+            cal_data["laser_min_x"], cal_data["laser_max_x"]
         )
             
         plane_config = PlaneConfig(
@@ -109,7 +112,9 @@ function save_config(config::AppConfig, filename::String="config.yaml")
             "z" => config.calibration.z,
             "a" => config.calibration.a,
             "b" => config.calibration.b,
-            "c" => config.calibration.c
+            "c" => config.calibration.c,
+            "laser_min_x" => config.calibration.laser_min_x,
+            "laser_max_x" => config.calibration.laser_max_x
         ),
         "plane" => OrderedDict( # <-- OrderedDict here
             "exist" => config.plane.exist,

@@ -134,3 +134,25 @@ function filter_by_plane(points::Vector{Point})::Vector{Point}
 
     return filtered_points
 end
+
+function filter_laser_points(laser_rows::Vector{LaserRow})::Vector{LaserRow}
+    config = load_config()
+    laser_min = config.calibration.laser_min_x
+    laser_max = config.calibration.laser_max_x
+
+    new_laser_rows::Vector{LaserRow} = []
+    for laser_row in laser_rows
+        new_laser_row::LaserRow = LaserRow()
+        new_laser_row.csv = laser_row.csv
+        new_laser_row.tm = laser_row.tm
+        for i in 1:length(laser_row.x_array)
+            if laser_row.x_array[i] >= laser_min && laser_row.x_array[i] <= laser_max
+                push!(new_laser_row.x_array, laser_row.x_array[i])
+                push!(new_laser_row.z_array, laser_row.z_array[i])
+                push!(new_laser_row.intensity_array, laser_row.intensity_array[i])
+            end
+        end
+        push!(new_laser_rows, new_laser_row)
+    end
+    return new_laser_rows
+end
