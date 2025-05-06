@@ -1,0 +1,125 @@
+@startuml Class Diagram for HLC Project
+
+skinparam classAttributeIconSize 0
+hide empty members
+skinparam packageStyle rectangle
+
+package Calc {
+    struct PointConfig  {
+        x: Float64
+        y: Float64
+    }
+
+    struct CalibrationConfig {
+        x: Float64
+        y: Float64
+        z: Float64
+        a: Float64
+        b: Float64
+        c: Float64
+        laser_min_x: Float64
+        laser_max_x: Float64
+    }
+
+    struct PlaneConfig  {
+        exist: Bool
+        A: Float64
+        B: Float64
+        C: Float64
+        D: Float64
+        StdZ: Float64
+        p0: PointConfig
+        p1: PointConfig
+        scans: Int
+    }
+
+    struct AppConfig  {
+        calibration: CalibrationConfig
+        plane: PlaneConfig
+        + save_config(filename): void 
+    }
+
+    struct LaserRow  {
+        csv: String
+        tm: DateTime
+        x_array: Vector{Float64}
+        z_array: Vector{Float64}
+        intensity_array: Vector{Int32}
+        + csv_to_data!(csv_row): LaserRow 
+        + data_to_csv(): NamedTuple    
+    }
+
+    struct RobotRow  {
+        csv: String
+        tm: DateTime
+        x: Float64
+        y: Float64
+        z: Float64
+        rx: Float64
+        ry: Float64
+        rz: Float64
+        + csv_to_data!(csv_row): RobotRow
+        + data_to_csv(): NamedTuple   
+        + euler_to_transform_y(): Matrix{Float64}
+    }
+
+    struct Point  {
+        csv: String
+        tm: DateTime
+        x: Float64
+        y: Float64
+        z: Float64
+    }
+
+    struct Height  {
+        csv: String
+        tm: DateTime
+        x: Float64
+        y: Float64
+        z: Float64
+        r: Float64
+        h: Float64
+        + csv_to_data!(csv_row): Height 
+        + data_to_csv(): NamedTuple     
+    }
+
+    class GlobalMethods {
+        + load_config(filename): AppConfig
+        + get_calibration(filename): RobotRow
+        + csv_to_data_array(Type{T}, file): Vector{T} 
+        + transform_to_euler_y(matrix): RobotRow
+        + calculate_points_row(robot_row, laser_row, calibration): Vector{Point}
+        + calculate_points(robot_rows, laser_rows, calibration): Vector{Point}
+        + calculate_plane(points): NTuple{4, Float64}
+        + filter_by_plane(points): Vector{Point}
+        + filter_laser_points(laser_rows): Vector{LaserRow}
+        + calculate_grid_range(points): void 
+        + calculate_laser_mins(laser_points): Vector{LaserRow}
+        + calculate_points_on_grid(points, scans): Vector{Height}
+        + calculate_delta_heigts_destribution(points, path): Tuple 
+        + calculate_heigts_destribution(points, path): Tuple 
+
+        - _parse_delimited_array(s, T): Vector{T} 
+        - _format_delimited_array(arr): String   
+        - _linear_regression_optim(x, z): NTuple{2, Float32} 
+    }
+} 
+
+
+
+AppConfig *--> "1" CalibrationConfig : contains
+AppConfig *--> "1" PlaneConfig : contains
+PlaneConfig *--> "2" PointConfig : contains p0, p1
+
+Calc.GlobalMethods ..> Calc : calls functions in
+
+Calc.GlobalMethods ..> AppConfig : uses (load/save)
+Calc.GlobalMethods ..> RobotRow : uses (get_calib, csv, transform, calc_points)
+Calc.GlobalMethods ..> LaserRow : uses (csv, calc_points, filter, mins)
+Calc.GlobalMethods ..> Point : uses (calc_points, plane, grid)
+Calc.GlobalMethods ..> Height : uses (calc_on_grid, heigts_distrib)
+Calc.GlobalMethods ..> CalibrationConfig : uses (filter_laser)
+Calc.GlobalMethods ..> PlaneConfig : uses (filter_by_plane, heigts_distrib)
+
+
+@enduml
