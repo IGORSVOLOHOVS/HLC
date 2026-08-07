@@ -25,3 +25,7 @@ Manifest.toml
 config_tmp.yaml
 
 *.csv
+
+# Compiled bytecode: regenerated on every run, never worth committing.
+__pycache__/
+*.pyc
