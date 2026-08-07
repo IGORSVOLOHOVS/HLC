@@ -40,3 +40,14 @@ This application is designed for calculating and visualizing the distributed hei
 Cource project:
 
 [📄 Application development for calculating and visualizing the distributed height of layers during 3D printing using the WAAM method.pdf](<docs/Application development for calculating and visualizing the distributed height of layers during 3D printing using the WAAM method.pdf>)
+
+## Two repositories, one project
+
+`CourceProject3` is the private coursework copy of this work. They are not
+copies of each other, which is worth stating because their file lists look
+almost the same: 30 of the 36 files there are byte-identical to files here, but
+this repository has ten the other does not - the write-up PDF, the wall images,
+a `.gitignore` - and five files exist in both with different content, `README.md`
+and `config.yaml` among them.
+
+This one is the fuller version and the public one. Read it first.
