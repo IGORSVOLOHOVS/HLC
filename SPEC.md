@@ -7,6 +7,33 @@ as `path:line`. Nothing here was run except one call of the Python port's
 machine that wrote this document, so "Verification" names a test that exists,
 not one that was seen to pass. The project hub is [`docs/README.md`](docs/README.md).
 
+<!-- jira-sync:start -->
+Jira: KAN-84
+
+## Tasks
+
+This list is one ticket in Jira project KAN, [KAN-84](https://igorsvolohovs.atlassian.net/browse/KAN-84). Each line is a checkbox there: tick it in Jira and the sync ticks it here; add a checkbox there and it is appended here. Done items are the features described in section 3; open items are what the project declares but the code does not do yet.
+
+- [x] Start-up (section 3.1) <!-- spec-start-up -->
+- [x] Monitoring (section 3.2) <!-- spec-monitoring -->
+- [x] Input parsing (section 3.3) <!-- spec-input-parsing -->
+- [x] Point cloud (section 3.4) <!-- spec-point-cloud -->
+- [x] Base plane (first processed index) (section 3.5) <!-- spec-base-plane-first-processed-index -->
+- [x] Layer heights (index 2 and later) (section 3.6) <!-- spec-layer-heights-index-2-and-later -->
+- [x] Plots (section 3.7) <!-- spec-plots -->
+- [x] Configuration, utilities and the Python port (section 3.8) <!-- spec-configuration-utilities-and-the-python-port -->
+- [ ] Robot and laser rows are synchronised by their timestamps (declared, not implemented) <!-- spec-robot-and-laser-rows-are-synchronised-by-their-tim -->
+- [ ] `config.yaml` holds plot settings (declared, not implemented) <!-- spec-config-yaml-holds-plot-settings -->
+- [ ] Plane fitted from points at the edges of the cloud (declared, not implemented) <!-- spec-plane-fitted-from-points-at-the-edges-of-the-cloud -->
+- [ ] `plane.exist` marks a computed plane (declared, not implemented) <!-- spec-plane-exist-marks-a-computed-plane -->
+- [ ] 2D scattered interpolation (declared, not implemented) <!-- spec-2d-scattered-interpolation -->
+- [ ] Automated test suite (declared, not implemented) <!-- spec-automated-test-suite -->
+- [ ] Manual test via `julia HLC.jl` (declared, not implemented) <!-- spec-manual-test-via-julia-hlc-jl -->
+- [ ] Hardware: Windows 10/11, 8 GB RAM, x64, 1 GB disk (declared, not implemented) <!-- spec-hardware-windows-10-11-8-gb-ram-x64-1-gb-disk -->
+- [ ] Automatic correction of the robot or welding (declared, not implemented) <!-- spec-automatic-correction-of-the-robot-or-welding -->
+
+<!-- jira-sync:end -->
+
 ## 1. Purpose and scope
 
 HLC calculates and plots the height of deposited layers in Wire Arc Additive
